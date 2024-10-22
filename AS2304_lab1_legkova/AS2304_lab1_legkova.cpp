@@ -1,6 +1,4 @@
-﻿// lab1legkovaAS2304.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
-
+﻿
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -10,7 +8,7 @@ struct Truba {
     string name = "";
     int dlina = -1;
     int diametr = -1;
-    bool inRepair = -1;
+    bool inRepair = false;
 };
 
 struct KS {
@@ -183,30 +181,20 @@ void save_obj(const Truba& truba, const KS& ks) {
 }
 
 void load(std::ifstream& file, KS& ks) {
-    if (sozdano(ks)) {
-        cout << "KS is created already!\n";
-    }
-    else {
         file.ignore(10000, '\n');
         getline(file, ks.name);
         file >> ks.totalWorkshops;
         file >> ks.activeWorkshops;
         file >> ks.efficiency;
         cout << "KS is created from file!" << endl;
-    }
 }
 void load(ifstream& file, Truba& truba) {
-    if (sozdano(truba)) {
-        cout << "Truba is created already!\n";
-    }
-    else {
         file.ignore(1000, '\n');
         getline(file, truba.name);
         file >> truba.dlina;
         file >> truba.diametr;
         file >> truba.inRepair;
         cout << "Truba is created from file!" << endl;
-    }
 }
 
 void load_obj(Truba& truba, KS& ks) {
@@ -219,13 +207,17 @@ void load_obj(Truba& truba, KS& ks) {
         if (line == "Truba") {
             load(file, truba);
         }
-        else cout << "Truba cant created from file!" << endl;
+        else {
+            truba = {};
+            cout << "Truba cant created from file!" << endl; }
 
         file >> line;
         if (line == "KS") {
             load(file, ks);
         }
-        else cout << "KS cant created from file!" << endl;
+        else { 
+            ks = {};
+            cout << "KS cant created from file!" << endl; }
 
     }
     else cout << "file not created!" << endl;
